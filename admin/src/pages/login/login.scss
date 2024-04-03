@@ -1,0 +1,63 @@
+
+.login {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-image: url("bgadminlogin.jpeg");
+    background-repeat: no-repeat;
+    background-size: 100% 100%;  
+}
+  
+.lContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    background-image: url("admin.jpg");
+    background-repeat: no-repeat;
+    background-size: 70px;
+    background-position: top;
+    background-position-y: 4px;
+    border-style: outset;
+    border-width: 5px;
+    border-color: lightslategrey;
+    padding: 50px;
+    text-align: center;
+    background-color: whitesmoke;
+    margin-top: 20px;
+    height: 350px;
+}
+  
+.lInput{
+    margin-top: 23px;
+    height: 45px;
+    padding: 10px;
+    width: 300px;
+    font-size: 17px;
+}
+  
+.lButton {
+    border: none;
+    padding: 10px 20px;
+    background-color: #0071c2;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-top: 5px;
+    height: 50px;
+}
+  
+.lButton:disabled{
+    background-color: #0071c28c;
+    cursor: not-allowed;
+}
+
+.colorspan
+ {
+   color:#ff3333;
+   font-size: 17px;
+   height: 0;
+   padding: 0;
+   margin: 0;
+ }
