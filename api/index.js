@@ -8,6 +8,8 @@ import usersRoute from "./routes/users.js";
 import bills from "./routes/bills.js";
 import meetings from "./routes/meetings.js"
 import billrecords from "./routes/billrecords.js"
+import transactions from "./routes/transactions.js"
+import notifications from "./routes/notifications.js"
 
 const app = express();
 
@@ -38,6 +40,8 @@ app.use("/api/users", usersRoute);
 app.use("/api/bills", bills);
 app.use("/api/meetings", meetings);
 app.use("/api/billrecords", billrecords);
+app.use("/api/transactions", transactions);
+app.use("/api/notifications", notifications);
 
 app.use((err, req, res, next) => {
   const errorStatus = err.status || 500;
