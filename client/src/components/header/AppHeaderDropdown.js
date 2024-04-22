@@ -4,6 +4,7 @@ import { AuthContext } from '../../context/AuthContext'
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import "./styleapp.css";
 import Swal from 'sweetalert2';
+import "./styleapp.css";
 
 
 import {
@@ -29,6 +30,16 @@ import CIcon from '@coreui/icons-react'
 const AppHeaderDropdown = () => {
   const { user }=useContext(AuthContext)
   const {dispatch}=useContext(AuthContext)
+  const navigate = useNavigate();
+
+
+  const handlepaymentButtonClick = () => {
+    navigate("/onlinepayment")
+};
+
+const handlesettingButtonClick = () => {
+  navigate("/edituser")
+};
 
   const handleClick = (e) => {
     e.preventDefault();
@@ -54,7 +65,16 @@ const AppHeaderDropdown = () => {
       <CDropdownToggle placement="bottom-end" className="py-0 pe-0" caret={false}>
       {user ? (
           <div className="d-flex align-items-center">
-            <CAvatar src={user.img} size="md" />
+            <CAvatar 
+                className='newavatar'
+                size="md" 
+                src={user.img} 
+                style={{ 
+                    height: "40px", 
+                    overflow: "hidden",
+                    borderRadius: "50%" 
+                }} 
+            />
             <span className="ms-2">{user.username} {user.surname}</span>
           </div>
         ) : (
@@ -67,26 +87,16 @@ const AppHeaderDropdown = () => {
       <CDropdownMenu className="pt-0" placement="bottom-end">
         <CDropdownHeader className="bg-body-secondary fw-semibold mb-2">Account</CDropdownHeader>
 
-        <CDropdownItem href="#">
-          <CIcon icon={cilEnvelopeOpen} className="me-2" />
-          Messages
-          <CBadge color="success" className="ms-2">
-            0
-          </CBadge>
+        <CDropdownItem className="appheaderdropdown" onClick={handlepaymentButtonClick}>
+          <CIcon icon={cilCreditCard} className="me-2" />
+          Payments
         </CDropdownItem>
         
         
         <CDropdownHeader className="bg-body-secondary fw-semibold my-2">Settings</CDropdownHeader>
-        <CDropdownItem href="#">
+        <CDropdownItem className="appheaderdropdown" onClick={handlesettingButtonClick}>
           <CIcon icon={cilSettings} className="me-2" />
           Settings
-        </CDropdownItem>
-        <CDropdownItem href="#">
-          <CIcon icon={cilCreditCard} className="me-2" />
-          Payments
-          <CBadge color="secondary" className="ms-2">
-            1
-          </CBadge>
         </CDropdownItem>
         
         <CDropdownDivider />

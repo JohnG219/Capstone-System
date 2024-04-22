@@ -5,7 +5,7 @@ import { CWidgetStatsD, CRow, CCol } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import { CChart } from '@coreui/react-chartjs'
 import { cibFacebook, cibLinkedin, cibTwitter, cilCalendar, cilPencil,
-  cilTrash } from '@coreui/icons'
+  cilTrash, cilBullhorn } from '@coreui/icons'
 import useFetch from '../../hooks/useFetch';
 import homecaintaphoto from '../widgets/caintagreenpark.jpg';
 import { Modal, Form, Button } from 'react-bootstrap';
@@ -18,7 +18,6 @@ const WidgetsBrand = (props) => {
   const [meetingDetails, setMeetingDetails] = useState({
     id: '',
     Meetings: '',
-    Time: '',
   });
 
   useEffect(() => {
@@ -29,7 +28,6 @@ const WidgetsBrand = (props) => {
     setMeetingDetails({
       id: meeting._id,
       Meetings: meeting.dateyr,
-      Time: meeting.time,
     });
     setShowModal(true);
   };
@@ -47,7 +45,6 @@ const WidgetsBrand = (props) => {
         },
         body: JSON.stringify({
           dateyr: meetingDetails.Meetings,
-          time: meetingDetails.Time,
         }),
       });
       if (response.ok) {
@@ -71,13 +68,11 @@ const WidgetsBrand = (props) => {
 
       return {
         Meetings: latestMeeting.dateyr,
-        Time: latestMeeting.time,
       };
     }
 
     return {
       Meetings: 'No meetings found',
-      Time: '-',
     };
   };
 
@@ -116,66 +111,45 @@ const WidgetsBrand = (props) => {
           <CCol sm={6} xl={4} xxl={3}>
             <CIcon className='editmeetingbtn' icon={cilPencil} onClick={() => handleEditMeeting(meetingsData.data[0])} />
             <CWidgetStatsD
-              color="warning"
-              {...(props.withCharts && {
-                chart: (
-                  <CChart
-                    className="position-absolute w-100 h-100"
-                    type="line"
-                    data={{
-                      labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-                      datasets: [
-                        {
-                          backgroundColor: 'rgba(255,255,255,.1)',
-                          borderColor: 'rgba(255,255,255,.55)',
-                          pointHoverBackgroundColor: '#fff',
-                          borderWidth: 2,
-                          data: [35, 23, 56, 22, 97, 23, 64],
-                          fill: true,
-                        },
-                      ],
-                    }}
-                    options={chartOptions}
-                  />
-                ),
-              })}
-              icon={<CIcon icon={cilCalendar} height={52} className="my-4 text-white" />}
+              color="success"
+              icon={<CIcon icon={cilBullhorn} height={52} className="my-4 text-white" />}
               values={[
-                { title: 'Meetings', value: renderMeetingInfo().Meetings },
-                { title: 'Time', value: renderMeetingInfo().Time },
+                {
+                  title: <span style={{ fontSize: '12px' }}>Announcement</span>,
+                  value: <span style={{ fontSize: '14px' }}>{renderMeetingInfo().Meetings}</span>,
+                },
               ]}
             />
           </CCol>
         </CRow>
       ) : (
         <div className="text-center mt-3">
-          <img src={homecaintaphoto} alt="Cainta Green Park" />
+            <img 
+            src={homecaintaphoto} 
+            alt="Cainta Green Park" 
+            style={{
+                maxWidth: "100%", 
+                height: "auto",   
+                display: "block", 
+                margin: "0 auto" 
+            }}
+        />
         </div>
       )}
 
-      <Modal show={showModal} onHide={handleCloseModal}>
+      <Modal className="modalannouncement" show={showModal} onHide={handleCloseModal}>
         <Modal.Header closeButton>
-          <Modal.Title>Edit Meeting</Modal.Title>
+          <Modal.Title>Edit Announcement</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form className="Formlisttt">
             <Form.Group controlId="formMeeting">
-              <Form.Label>Meeting</Form.Label>
               <Form.Control
-                type="text"
-                placeholder="Meeting"
+                as="textarea"
+                placeholder="Post Announcement"
                 value={meetingDetails.Meetings}
                 onChange={(e) => setMeetingDetails({ ...meetingDetails, Meetings: e.target.value })}
-              />
-            </Form.Group>
-
-            <Form.Group className="timeform" controlId="formTime">
-              <Form.Label>Time</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="Time"
-                value={meetingDetails.Time}
-                onChange={(e) => setMeetingDetails({ ...meetingDetails, Time: e.target.value })}
+                style={{ height: '140px' }} 
               />
             </Form.Group>
 

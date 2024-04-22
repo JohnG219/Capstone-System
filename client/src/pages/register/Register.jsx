@@ -19,6 +19,7 @@ const Register = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [phone, setPhone] = useState('')
+  const [stall, setStall] = useState('')
   const [birthdate, setBirthdate] = useState('')
   const [sex, setSex] = useState('')
   const [loading, setLoading] = useState(false)
@@ -26,6 +27,17 @@ const Register = () => {
   const [submitted, setSubmitted] = useState(false)
   const [error, setError] = useState(false)
   const [info, setInfo] = useState({})
+  const [month, setMonth] = useState(''); 
+  const [day, setDay] = useState('');
+  const [year, setYear] = useState(''); 
+
+  const months = [
+    'January', 'February', 'March', 'April', 'May', 'June',
+    'July', 'August', 'September', 'October', 'November', 'December'
+  ];
+  const days = Array.from({ length: 31 }, (_, i) => i + 1);
+  const years = Array.from({ length: 200 }, (_, i) => 2099 - i); 
+
 
   const handleUserame = (e) => {
     setUsername(e.target.value)
@@ -40,6 +52,12 @@ const Register = () => {
   // Handling the email change
   const handleEmail = (e) => {
     setEmail(e.target.value)
+    setSubmitted(false)
+  }
+
+  // Handling the stall
+  const handleStall = (e) => {
+    setStall(e.target.value)
     setSubmitted(false)
   }
 
@@ -66,10 +84,25 @@ const Register = () => {
     setSubmitted(false)
   }
 
+
+  const handleYearChange = (e) => {
+    setYear(e.target.value);
+    setSubmitted(false);
+  };
   const handleBirthdate = (e) => {
     setBirthdate(e.target.value)
     setSubmitted(false)
   }
+  const handleMonthChange = (e) => {
+    setMonth(e.target.value);
+    setSubmitted(false);
+  };
+
+  const handleDayChange = (e) => {
+    setDay(e.target.value);
+    setSubmitted(false);
+  };
+
 
   const handleSex = (e) => {
     setSex(e.target.value)
@@ -101,7 +134,8 @@ const Register = () => {
         email,
         password,
         phone,
-        birthdate,
+        stall,
+        birthdate: `${month} ${day} ${year}`, 
         sex,
         ...info,
         img: url,
@@ -110,9 +144,7 @@ const Register = () => {
       await axios.post(`${apiUrl}/auth/register`, newUser)
       setSubmitted(true)
       toast.success('Your Registration has been Successful!')
-      setTimeout(() => {
         navigate('/login')
-      }, 2000)
     } catch (err) {
       console.log(err)
       toast.error('Error, please fill each field')
@@ -136,7 +168,12 @@ const Register = () => {
     <>
       <body className="regBody">
         <div className="loginContainer">
-          <div className="logodiv">
+          <div className="logodiv" style={{
+            maxWidth: "100%", 
+            height: "auto",   
+            display: "block", 
+            margin: "0 auto" 
+          }} >
             <img src={logo} alt="Logo" style={{ width: '75px', height: '75px' }} />
           </div>
           <h1 className="titleLog">Utility Stalls in Zone-3 Cainta Greenpark Village</h1>
@@ -216,21 +253,43 @@ const Register = () => {
                 />
                 <input
                   onChange={handlePhone}
-                  className="rInput"
                   type="text"
                   id="phone"
-                  placeholder="+639623587456"
+                  className="rInput"
+                  placeholder="Contact Number"
                 />
                 <input
-                  onChange={handleBirthdate}
-                  className="rInput1"
-                  type="date"
-                  id="birthdate"
-                  placeholder="Birthdate"
-                  onFocus={(e) => (e.currentTarget.type = 'date')}
-                  onBlur={(e) => (e.currentTarget.type = 'text')}
+                  onChange={handleStall}
+                  type="text"
+                  id="stall"
+                  className="rInput"
+                  placeholder="Stall Name"
                 />
+                 <div className="birthdate-selects">
+                  <label>Birthdate:</label>
+                  <br></br>
+                    <select value={month} onChange={handleMonthChange} className="rInput1">
+                      <option value="">Month</option>
+                      {months.map((month, index) => (
+                        <option key={index} value={month}>{month}</option>
+                      ))}
+                    </select>
+                    <select value={day} onChange={handleDayChange} className="daybirth">
+                      <option value="">Day</option>
+                      {days.map((day, index) => (
+                        <option key={index} value={day}>{day}</option>
+                      ))}
+                    </select>
+                    <select value={year} onChange={handleYearChange} className="yearbirth">
+                      <option value="">Year</option>
+                      {years.map((year, index) => (
+                        <option key={index} value={year}>{year}</option>
+                      ))}
+                    </select>
+                  </div>
                 <div className="genderselect">
+                <label>Gender:</label>
+                <br></br>
                   <div className="maleselect">
                     <label>
                       <input

@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useContext } from "react";
 import { useState } from "react";
+import { apiUrl } from "../../../server.json"
 import { AuthContext } from "../../context/AuthContext";
 import "./Edituser.css";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
@@ -8,7 +9,7 @@ import DriveFolderUploadOutlinedIcon from "@mui/icons-material/DriveFolderUpload
 import { toast } from "react-toastify";
 
 const EditUser = () => {
-  const { user } = useContext(AuthContext);
+  const { user, dispatch } = useContext(AuthContext);
   const [file, setFile] = useState("");
   const [info, setInfo] = useState({});
   const [loading, setLoading] = useState(false);
@@ -17,7 +18,7 @@ const EditUser = () => {
   const [credentials1, setCredentials1] = useState({
     password: undefined,
     username: undefined,
-    surename: undefined,
+    surname: undefined,
     img: undefined,
     phone: undefined,
   });
@@ -29,7 +30,7 @@ const EditUser = () => {
     );
   };
   
-  const { error, dispatch } = useContext(AuthContext);
+  const { error } = useContext(AuthContext);
   const navigate = useNavigate();
 
 
@@ -82,12 +83,12 @@ const EditUser = () => {
         updatedCredentials.img = url;
       }
 
-      const res = await axios.put(
-        `/users/update/${user._id}`,
-        updatedCredentials
-      );
-      toast.success('Update Successful. please re-login to your account.');
-      window.location.assign("/login");
+      const res = await axios.put(`${apiUrl}/users/update/${user._id}`, updatedCredentials);
+
+      dispatch({ type: "LOGIN_SUCCESS", payload: res.data });
+
+      toast.success('Update Successful.');
+      navigate("/");
     } catch (err) {
       console.log(err);
       toast.warning('Old/New password is required! The most efficient way you can avoid being hacked');
@@ -95,8 +96,6 @@ const EditUser = () => {
       setLoading(false);
     }
   };
-
-  console.log(credentials1);
 
   return (
     <div className="login2">
@@ -134,21 +133,24 @@ const EditUser = () => {
           <input
             type="username"
             className="lInput7"
-            placeholder="Firstname"
+            placeholder={user.username ? user.username : "Firstname"}
             id="username"
             onChange={handleChange}
+            disabled
           />
+
            <input
-            type="surename"
+            type="surname"
             className="lInput7"
-            placeholder="Lastname"
-            id="surename"
+            placeholder={user.surname ? user.surname : "LastName"}
+            id="surname"
             onChange={handleChange}
+            disabled
           />
           <input
             type="tel"
             className="lInput7"
-            placeholder="Contact#"
+            placeholder="Contact Number"
             id="phone"
             onChange={handleChange}
           />

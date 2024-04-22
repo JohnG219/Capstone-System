@@ -74,6 +74,22 @@
   border-radius: 5px;
   font-size: 14px;
 }
+.daybirth {
+  width: 27%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 14px;
+}
+.yearbirth {
+  width: 30%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 14px;
+}
 
 .footer {
   text-align: center;

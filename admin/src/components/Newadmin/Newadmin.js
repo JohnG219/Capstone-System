@@ -2,7 +2,7 @@ import { useState, useContext, useEffect } from 'react'
 import axios from 'axios'
 import { AuthContext } from '../../context/AuthContext';
 import { apiUrl } from '../../../server.json'
-import "./addstallst.css";
+import "./newadmin.css";
 import { CCard, CCardHeader, CCardBody } from '@coreui/react';
 import DriveFolderUploadOutlinedIcon from '@mui/icons-material/DriveFolderUploadOutlined'
 import { useNavigate } from 'react-router-dom'
@@ -10,14 +10,15 @@ import { CircularProgress } from '@material-ui/core'
 import { toast } from 'react-toastify'
 
 
-const Addstallst = () => {
+const Newadmin = () => {
   const { user } = useContext(AuthContext);
+  const [isAdmin, setIsAdmin] = useState(true); 
   const [username, setUsername] = useState('')
   const [surname, setSurname] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [phone, setPhone] = useState('')
-  const [stall, setStall] = useState('')
+  const [stall, setStall] = useState(''); 
   const [birthdate, setBirthdate] = useState('')
   const [sex, setSex] = useState('')
   const [loading, setLoading] = useState(false)
@@ -38,6 +39,7 @@ const Addstallst = () => {
   const years = Array.from({ length: 200 }, (_, i) => 2099 - i); 
 
 
+
   const handleUserame = (e) => {
     setUsername(e.target.value)
     setSubmitted(false)
@@ -55,10 +57,14 @@ const Addstallst = () => {
   }
 
   // Handling the stall
+  useEffect(() => {
+    setStall('Administrator');
+  }, []);
+
   const handleStall = (e) => {
-    setStall(e.target.value)
-    setSubmitted(false)
-  }
+    setStall(e.target.value);
+    setSubmitted(false);
+  };
 
   // Handling the password change
   const handlePassword = (e) => {
@@ -112,6 +118,7 @@ const Addstallst = () => {
     e.preventDefault()
     setLoading(true)
 
+    
     if (password.length < 6) {
       setError(true)
       setLoading(false)
@@ -138,11 +145,12 @@ const Addstallst = () => {
         sex,
         ...info,
         img: url,
+        isAdmin: true,
       }
 
       await axios.post(`${apiUrl}/auth/register`, newUser)
       setSubmitted(true)
-      toast.success('Your stall tenant addition has been successful.')
+      toast.success('Add new admin has been successful.')
         navigate('/')
     } catch (err) {
       console.log(err)
@@ -152,13 +160,14 @@ const Addstallst = () => {
     }
   }
 
+  const navigate = useNavigate();
   
   return (
     <>
     {user ? (
       <CCard className="mb-4">
         <CCardHeader>
-          NEW
+          ADMIN
         </CCardHeader>
         <CCardBody>
           <table className="table">
@@ -243,13 +252,15 @@ const Addstallst = () => {
                           className="rInput"
                           placeholder="Contact Number"
                         />
-                        <input
-                          onChange={handleStall}
-                          type="text"
-                          id="stall"
-                          className="rInput"
-                          placeholder="Stall Name"
-                        />
+                         <input
+                            onChange={handleStall}
+                            value={stall} 
+                            type="text"
+                            id="stall"
+                            className="rInput"
+                            placeholder="Stall Name"
+                            disabled
+                          />
                         <div className="birthdate-selects">
                           <label>Birthdate:</label>
                           <br></br>
@@ -302,6 +313,16 @@ const Addstallst = () => {
                           </div>
                         </div>
                       </div>
+                      <div style={{ display: 'none', justifyContent: 'center', alignItems: 'center' }}>
+                          <label>
+                            <input
+                              type="checkbox"
+                              checked={isAdmin}
+                              onChange={() => setIsAdmin(!isAdmin)} 
+                              disabled={isAdmin} 
+                            />
+                          </label>
+                        </div>
                     </div>
                     <button disabled={loading} onClick={handleClick} className="lButton">
                       {loading ? <CircularProgress size={19} color="white" /> : 'Submit'}
@@ -320,4 +341,4 @@ const Addstallst = () => {
   );
 };
 
-export default Addstallst; 
+export default Newadmin; 

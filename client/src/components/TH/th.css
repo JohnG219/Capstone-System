@@ -19,6 +19,17 @@
   text-decoration: underline;
 }
 
+.status-processed { 
+  color: orange; 
+}
+.status-paid {
+  color: green;
+}
+.status-cancelled {
+  color: red;
+}
+
+
 
 .datesize {
     font-size: 17px;

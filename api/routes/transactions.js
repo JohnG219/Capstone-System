@@ -11,6 +11,8 @@ router.post("/", async (req, res) => {
       paymentmethodtransaction: req.body.paymentmethodtransaction,
       billtypetransaction: req.body.billtypetransaction,
       amountoftransaction: req.body.amountoftransaction,
+      gcashnumber: req.body.gcashnumber,
+      stallnametra: req.body.stallnametra,
       dateoftransaction: req.body.dateoftransaction,
       statusoftransaction: req.body.statusoftransaction,
     });
@@ -45,6 +47,8 @@ router.put("/:id", async (req, res) => {
       paymentmethodtransaction: req.body.paymentmethodtransaction,
       billtypetransaction: req.body.billtypetransaction,
       amountoftransaction: req.body.amountoftransaction,
+      gcashnumber: req.body.gcashnumber,
+      stallnametra: req.body.stallnametra,
       dateoftransaction: req.body.dateoftransaction,
       statusoftransaction: req.body.statusoftransaction,
       },

@@ -71,21 +71,30 @@ const Billrecords = () => {
   return (
     <>
       {user ? (
-        <CCard className="mb-4">
+        <CCard className="newvie">
           <CCardHeader>
             B.R <button className='printbtn' onClick={handlePrint}>Print</button>
             <button className='readme' onClick={openModal}>READ ME</button>
           </CCardHeader>
           <CCardBody>
           <div className="search-bar">
-              <input
+          <input
               className='inputsearchbar'
-                type="text"
-                placeholder="Search"
-                value={searchInput}
-                onChange={(e) => setSearchInput(e.target.value)}
-              />
+              type="text"
+              placeholder="Search"
+              value={searchInput}
+              onChange={(e) => setSearchInput(e.target.value)}
+              onKeyPress={(e) => {
+                if (e.key === '@' || e.key === '!' || e.key === '#' || e.key === '-' || e.key === '$' || e.key === '%' || e.key === '^' || e.key === '&' || e.key === '*' || e.key === '(' || e.key === ')' || e.key === '_' || e.key === '=' || e.key === '`'
+              
+                || e.key === '~' || e.key === '_' || e.key === '+') {
+                  e.preventDefault();
+                }
+              }}
+            />
             </div>
+
+         <div className='tablebillamount'>
             {currentItems.length > 0 ? (
               <>
                 <p id="printre">Please print the document with a watermark. If your document does not have a watermark, it will not be considered valid.</p>
@@ -103,10 +112,10 @@ const Billrecords = () => {
                     {currentItems.map((record, index) => (
                       <tr key={index}>
                         <td id="tbodyonlinepay">
-                          <p><h className="yrr">{record.typebill}</h></p>
+                          <p className='typebillclass'>{record.typebill}</p>
                         </td>
                         <td id="tbodyonlinepay">
-                          <p><code className="text-success">₱{record.typebillamount}</code></p>
+                          <p id="billsmountype">₱{record.typebillamount}</p>
                         </td>
                         <td id="tbodyonlinepay">
                           <p><code className="fromto23">{record.fromdate}</code></p>
@@ -115,7 +124,7 @@ const Billrecords = () => {
                           <p><code className="fromto23">{record.todate}</code></p>
                         </td>
                         <td id="tbodyonlinepay">
-                          <p><h className="yrr">{record.yrtype}</h></p>
+                          <p className='yeartpye'>{record.yrtype}</p>
                         </td>
                       </tr>
                     ))}
@@ -130,8 +139,9 @@ const Billrecords = () => {
             ) : (
               <div className="text-center mt-3">Search not found.</div>
             )}
-          </CCardBody>
-        </CCard>
+        </div>  
+        </CCardBody>
+      </CCard> 
       ) : (
         <div className="text-center mt-3">You are not logged in.</div>
       )}

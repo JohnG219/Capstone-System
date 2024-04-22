@@ -36,11 +36,14 @@
     "antd": "^5.15.4",
     "axios": "^1.6.8",
     "bootstrap": "^5.3.3",
+    "build": "^0.1.4",
     "chart.js": "^4.4.2",
     "classnames": "^2.5.1",
     "core-js": "^3.36.1",
+    "date-fns": "^3.6.0",
     "install": "^0.13.0",
     "npm": "^10.5.0",
+    "otp-generator": "^4.0.1",
     "prop-types": "^15.8.1",
     "react": "^18.2.0",
     "react-bootstrap": "^2.10.2",
@@ -57,13 +60,6 @@
     "simplebar-react": "^3.2.4",
     "sweetalert2": "^11.10.7",
     "web-vitals": "^3.5.2"
-  },
-   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "start:prod": "react-scripts start" 
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^4.2.1",

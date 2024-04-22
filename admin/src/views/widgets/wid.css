@@ -57,3 +57,9 @@
   .updatebtnmeeting {
     margin-top: 20px;
   }
+
+  .modalannouncement {
+   align-items: center;
+   justify-content: center;
+   margin-top: 10%;
+  }

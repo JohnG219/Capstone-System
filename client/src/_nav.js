@@ -65,11 +65,6 @@ const _nav = [
     items: [
       {
         component: CNavItem,
-        name: 'PM Administrator',
-        to: '/',
-      },
-      {
-        component: CNavItem,
         name: <span style={{ color: 'green', fontSize: '18px' }}>+639525417813</span>, 
         to: '/',
         disabled: true,

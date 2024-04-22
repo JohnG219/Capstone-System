@@ -4,6 +4,7 @@ import "./wid.css";
 import { AuthContext } from '../../context/AuthContext';
 import axios from 'axios';
 import { apiUrl } from "../../../server.json" 
+import { Pie } from 'react-chartjs-2'; 
 
 import {
   CRow,
@@ -18,7 +19,6 @@ import { getStyle } from '@coreui/utils';
 import { CChartBar, CChartLine } from '@coreui/react-chartjs';
 import CIcon from '@coreui/icons-react';
 import { cilArrowBottom, cilArrowTop, cilOptions, cilPeople } from '@coreui/icons';
-import { Pie } from 'react-chartjs-2'; 
 
 const WidgetsDropdown = (props) => {
   const widgetChartRef1 = useRef(null);
@@ -108,10 +108,10 @@ const WidgetsDropdown = (props) => {
   
 
   const pieChartData = {
-    labels: ['Water Bill', 'Electric Bill', 'Previous Bill'],
+    labels: ['Water Bills', 'Electric Bills', 'Previous Bill'],
     datasets: [
       {
-        data: [waterBillAmount ],
+        data: [waterBillAmount, electricBillAmount, previousBillAmount ],
         backgroundColor: ['#36A2EB', '#FFCE56', '#FF6384'], 
         hoverBackgroundColor: ['#36A2EB', '#FFCE56', '#FF6384'], 
       },
@@ -131,19 +131,7 @@ const WidgetsDropdown = (props) => {
             </>
           }
           title="Users Registered"
-          action={
-            <CDropdown alignment="end">
-              <CDropdownToggle color="transparent" caret={false} className="text-white p-0">
-                <CIcon icon={cilOptions} />
-              </CDropdownToggle>
-              <CDropdownMenu>
-                <CDropdownItem>Action</CDropdownItem>
-                <CDropdownItem>Another action</CDropdownItem>
-                <CDropdownItem>Something else here...</CDropdownItem>
-                <CDropdownItem disabled>Disabled action</CDropdownItem>
-              </CDropdownMenu>
-            </CDropdown>
-          }
+          
           chart={
             <CChartLine
               ref={widgetChartRef1}
@@ -215,23 +203,11 @@ const WidgetsDropdown = (props) => {
           value={
             <>
               ₱{waterBillAmount}&nbsp; 
-              <span className="fs-6 fw-normal">(Mar 15-Apr 15)</span>
+              <span className="fs-6 fw-normal"></span>
             </>
           }   
           title="Total Water Bills"
-          action={
-            <CDropdown alignment="end">
-              <CDropdownToggle color="transparent" caret={false} className="text-white p-0">
-                <CIcon icon={cilOptions} />
-              </CDropdownToggle>
-              <CDropdownMenu>
-                <CDropdownItem>Action</CDropdownItem>
-                <CDropdownItem>Another action</CDropdownItem>
-                <CDropdownItem>Something else here...</CDropdownItem>
-                <CDropdownItem disabled>Disabled action</CDropdownItem>
-              </CDropdownMenu>
-            </CDropdown>
-          }
+          
           chart={
             <CChartLine
               ref={widgetChartRef2}
@@ -302,23 +278,11 @@ const WidgetsDropdown = (props) => {
           value={
             <>
               ₱{electricBillAmount}&nbsp; 
-              <span className="fs-6 fw-normal">(Mar 15-Apr 15)</span>
+              <span className="fs-6 fw-normal"></span>
             </>
           }
           title="Total Electric Bills"
-          action={
-            <CDropdown alignment="end">
-              <CDropdownToggle color="transparent" caret={false} className="text-white p-0">
-                <CIcon icon={cilOptions} />
-              </CDropdownToggle>
-              <CDropdownMenu>
-                <CDropdownItem>Action</CDropdownItem>
-                <CDropdownItem>Another action</CDropdownItem>
-                <CDropdownItem>Something else here...</CDropdownItem>
-                <CDropdownItem disabled>Disabled action</CDropdownItem>
-              </CDropdownMenu>
-            </CDropdown>
-          }
+          
           chart={
             <CChartLine
               className="mt-3"
@@ -372,23 +336,11 @@ const WidgetsDropdown = (props) => {
           value={
             <>
               ₱{previousBillAmount}&nbsp; 
-              <span className="fs-6 fw-normal">(Jan 15-Apr 15)</span>
+              <span className="fs-6 fw-normal"></span>
             </>
           }
           title="Total Previous Bills"
-          action={
-            <CDropdown alignment="end">
-              <CDropdownToggle color="transparent" caret={false} className="text-white p-0">
-                <CIcon icon={cilOptions} />
-              </CDropdownToggle>
-              <CDropdownMenu>
-                <CDropdownItem>Action</CDropdownItem>
-                <CDropdownItem>Another action</CDropdownItem>
-                <CDropdownItem>Something else here...</CDropdownItem>
-                <CDropdownItem disabled>Disabled action</CDropdownItem>
-              </CDropdownMenu>
-            </CDropdown>
-          }
+          
           chart={
             <CChartBar
               className="mt-3 mx-3"
@@ -458,6 +410,9 @@ const WidgetsDropdown = (props) => {
           }
         />
       </CCol>
+      <div className="pie-chart-container">
+  <Pie className="pie-chart-canvas" data={pieChartData} />
+</div>
     </CRow>
     ) : (
       <div className="text-center mt-3">You are not logged in. Admin</div>

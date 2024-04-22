@@ -1,15 +1,18 @@
-.fromto23 {
+#billsmountype{
     font-size: 20px;
-    color: indianred;
+    color: green;
 }
-
-.text-success {
-    font-size: 20px;
+#gcashnumber {
+  font-size: 17px;
+  color: #0275d8;
 }
-
 
 .datesize {
     font-size: 17px;
+}
+
+.optionsvalue {
+  margin: 10px;
 }
 
 .table td {
@@ -60,16 +63,33 @@
   background-color: #E8E0E0;
 }
 
+
+
+
 @media (max-width: 480px) {
   .datesize {
     font-size: 13px;
   }
-  
 }
 
 @media (max-width: 767px) {
   .datesize {
     font-size: 16px;
   }
-  
+  .fromto23  {
+    font-size: 13px;
+  }
+  #billsmountype {
+    font-size: 13px;
+  }
+  #titlebill {
+    font-size: 11px;
+  }
+  .typebillclass {
+    font-size: 13px;
+  }
+  .yeartpye {
+    font-size: 13px;
+  }
+
 }

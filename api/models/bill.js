@@ -5,7 +5,9 @@ const billSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  
+  stallmonthly: {
+    type: String,
+  },
   electricbill: {
     type: String,
   },

@@ -8,6 +8,7 @@ router.post("/", async (req, res) => {
   try {
     const bill = new Bill({
       email: req.body.email,
+      stallmonthly: req.body.stallmonthly,
       electricbill: req.body.electricbill,
       waterbill: req.body.waterbill,
       currentbalance: req.body.currentbalance,
@@ -44,6 +45,7 @@ router.put("/:id", async (req, res) => {
       req.params.id,
       {
       email: req.body.email,
+      stallmonthly: req.body.stallmonthly,
       electricbill: req.body.electricbill,
       waterbill: req.body.waterbill,
       currentbalance: req.body.currentbalance,

@@ -21,6 +21,12 @@ const transactionSchema = new mongoose.Schema({
   statusoftransaction: {
     type: String,
   },
+  gcashnumber: {
+    type: String,
+  },
+  stallnametra: {
+    type: String,
+  },
 
 });
 

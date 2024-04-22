@@ -68,7 +68,12 @@ const Forgot = () => {
 
   return (
     <body className="regBody123">
-      <div className="login123">
+      <div className="login123" style={{
+      maxWidth: "100%", 
+      height: "auto",   
+      display: "block", 
+      margin: "0 auto" 
+  }}>
         <NavLink to="/login" className="close-button" onClick={handleCancel}>
           <CloseIcon />
         </NavLink>

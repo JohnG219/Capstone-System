@@ -85,7 +85,12 @@ const Login = () => {
 
   return (
     <body className="logBody">
-      <div className="loginContainer">
+      <div className="loginContainer" style={{
+                maxWidth: "100%", 
+                height: "auto",   
+                display: "block", 
+                margin: "0 auto" 
+            }} >
         <div className="logodiv">
           <img
             src={logo}
@@ -96,7 +101,12 @@ const Login = () => {
         <h1 className="titleLog">
           Utility Stalls in Zone-3 Cainta Greenpark Village
         </h1>
-        <div className="login">
+        <div className="login" style={{
+          maxWidth: "100%", 
+          height: "auto",   
+          display: "block", 
+          margin: "0 auto" 
+        }}>
           <div className="lContainer">
             <input
               type="text"

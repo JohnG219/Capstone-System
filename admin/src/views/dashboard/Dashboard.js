@@ -5,8 +5,10 @@ import classNames from "classnames";
 import { apiUrl } from "../../../server.json";
 import logocainta from "./favicon.ico";
 import { AuthContext } from "../../context/AuthContext";
-import { Modal, Form, Button } from "react-bootstrap";
+import { Modal, Form, Button, FormControl } from "react-bootstrap";
 import { toast } from "react-toastify";
+import moment from "moment";
+import { Visibility } from "@mui/icons-material";
 
 import {
   CAvatar,
@@ -49,6 +51,7 @@ import {
   cilPeople,
   cilPencil,
   cilTrash,
+  cilLowVision,
 } from "@coreui/icons";
 
 import WidgetsBrand from "../widgets/WidgetsBrand";
@@ -59,9 +62,19 @@ const Dashboard = () => {
   const { user } = useContext(AuthContext);
   const [users, setUsers] = useState([]);
 
+  const [showModal1, setShowModal1] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [editedUser, setEditedUser] = useState(null);
+  const [viewedUser, setViewedUser] = useState(null);
+
+  const [searchInput, setSearchInput] = useState("");
+  const [filteredUsers, setFilteredUsers] = useState([]);
+
   const [isLoading, setIsLoading] = useState(false);
+  const currentPHTime = moment().utcOffset("+0800").format("MMMM D, YYYY h:mm A");
+
+  const itemsPerPage = 5;
+  const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -82,9 +95,17 @@ const Dashboard = () => {
     setShowModal(true);
   };
 
+  const handleView = (userId) => {
+    const userToView = users.find((user) => user._id === userId);
+    setViewedUser(userToView);
+    setShowModal1(true);
+  };
+
   const handleCloseModal = () => {
     setEditedUser(null);
+    setViewedUser(null);
     setShowModal(false);
+    setShowModal1(false);
   };
 
   const handleSaveChanges = async () => {
@@ -125,51 +146,49 @@ const Dashboard = () => {
     }
   };
 
+
+  useEffect(() => {
+    const filtered = users.filter(
+      (user) =>
+        user.username.toLowerCase().includes(searchInput.toLowerCase()) ||
+        user.email.toLowerCase().includes(searchInput.toLowerCase())
+    );
+    setFilteredUsers(filtered);
+    setCurrentPage(1); 
+  }, [searchInput, users]);
+
+  const handleSearchInputChange = (e) => {
+    setSearchInput(e.target.value);
+  };
+
+
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentUsers = filteredUsers.slice(indexOfFirstItem, indexOfLastItem); 
+
+
+  const totalPages = Math.ceil(filteredUsers.length / itemsPerPage);
+
+
   return (
     <>
       <WidgetsDropdown className="mb-4" />
-
-      <CCard className="mb-4">
+      <CCard className="mb-4" >
         {user ? (
           <CCardBody>
             <CRow>
               <CCol sm={5}>
-                <h4 id="traffic" className="card-title mb-0">
-                  Chart <CIcon icon={cifPh} />
-                </h4>
-                <div className="small text-body-secondary">
-                  January - December 2024
+              <div className="small text-body-secondary" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                  <h4 id="traffic" className="card-title mb-0" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', textAlign: 'center' }}>
+                    {currentPHTime} <CIcon icon={cifPh} />
+                  </h4>
                 </div>
               </CCol>
-              <CCol sm={7} className="d-none d-md-block">
-                <CButtonGroup className="float-end me-3">
-                  {["Day", "Month", "Year"].map((value) => (
-                    <CButton
-                      color="outline-secondary"
-                      key={value}
-                      className="mx-0"
-                      active={value === "Month"}
-                    >
-                      {value}
-                    </CButton>
-                  ))}
-                </CButtonGroup>
-              </CCol>
             </CRow>
-            /* *\
           </CCardBody>
         ) : (
           <div className="text-center mt-3"></div>
         )}
-        <CCardFooter>
-          <CRow
-            xs={{ cols: 1, gutter: 4 }}
-            sm={{ cols: 2 }}
-            lg={{ cols: 4 }}
-            xl={{ cols: 5 }}
-            className="mb-2 text-center"
-          ></CRow>
-        </CCardFooter>
       </CCard>
 
       <WidgetsBrand className="mb-4" withCharts />
@@ -180,6 +199,22 @@ const Dashboard = () => {
               <CCardHeader>
                 <img src={logocainta} alt="Logo" height={25} />{" "}
               </CCardHeader>
+              <Form className="mt-4">
+                <FormControl
+                  type="text"
+                  placeholder="Search by name or email"
+                  value={searchInput}
+                  onChange={handleSearchInputChange}
+                  style={{ width: '280px', marginLeft: '10px' }} 
+                  onKeyPress={(e) => {
+                    const invalidChars = ['@', '-', '!', '#', '$', '%', '^', '&', '*', '(', ')', '_', '=', '`', '~', '+', 
+                    '1', '2', '3', '4', '5', '6', '7', '8', '9', '0' ];
+                    if (invalidChars.includes(e.key)) {
+                      e.preventDefault();
+                    }
+                  }}
+                />
+              </Form>
               <CCardBody>
                 <CTable align="middle" className="mb-0 border" hover responsive>
                   <CTableHead className="text-nowrap">
@@ -209,10 +244,26 @@ const Dashboard = () => {
                   </CTableHead>
 
                   <CTableBody>
-                    {users.map((user) => (
+                  {filteredUsers.length === 0 ? (
+                      <tr>
+                        <td colSpan="7" className="text-center">
+                          User not found
+                        </td>
+                      </tr>
+                        ) : (
+                      currentUsers.map((user) => (
                       <CTableRow key={user._id}>
                         <CTableDataCell className="text-center">
-                          <CAvatar size="md" src={user.img} />
+
+                          <CAvatar
+                            size="md"
+                            src={user.img}
+                            style={{
+                              height: "40px",
+                              overflow: "hidden",
+                              borderRadius: "50%"
+                            }}
+                          />
                         </CTableDataCell>
                         <CTableDataCell>
                           <div>
@@ -246,11 +297,17 @@ const Dashboard = () => {
                               id="iconaction"
                               onClick={() => handleEdit(user._id)}
                             />
+                            <Visibility
+                                className="text-primary"
+                                id="iconaction"
+                                onClick={() => handleView(user._id)}
+                              />
                             <CIcon
                               icon={cilTrash}
                               className="text-danger"
                               id="iconaction"
                               onClick={() => handleDelete(user._id)}
+                              style={{ display: 'none' }}
                             />
                           </div>
                         </CTableDataCell>
@@ -263,6 +320,7 @@ const Dashboard = () => {
                               <Form.Group controlId="formUsername">
                                 <Form.Label>First Name</Form.Label>
                                 <Form.Control
+                                  disabled
                                   type="text"
                                   placeholder="Enter firstname"
                                   value={editedUser ? editedUser.username : ""}
@@ -280,6 +338,7 @@ const Dashboard = () => {
                               >
                                 <Form.Label>Last Name</Form.Label>
                                 <Form.Control
+                                  disabled
                                   type="text"
                                   placeholder="Enter lastname"
                                   value={editedUser ? editedUser.surname : ""}
@@ -297,6 +356,7 @@ const Dashboard = () => {
                               >
                                 <Form.Label>Email</Form.Label>
                                 <Form.Control
+                                  disabled
                                   type="email"
                                   placeholder="Enter email"
                                   value={editedUser ? editedUser.email : ""}
@@ -352,10 +412,85 @@ const Dashboard = () => {
                             </Form>
                           </Modal.Body>
                         </Modal>
+                        <Modal show={showModal1} onHide={handleCloseModal}>
+                        <Modal.Header closeButton>
+                          <Modal.Title>User Details</Modal.Title>
+                        </Modal.Header>
+                        <Modal.Body>
+                          {viewedUser && (
+                            <Form>
+
+                            <div className="d-flex justify-content-center mb-3">
+                                <img
+                                  src={viewedUser.img}
+                                  className="img-fluid rounded-circle"
+                                  style={{ width: "100px", height: "100px" }}
+                                    />
+                              </div>
+
+                              <Form.Group controlId="formUsername">
+                                <Form.Label>First Name</Form.Label>
+                                <Form.Control
+                                  disabled
+                                  type="text"
+                                  value={viewedUser.username}
+                                />
+                              </Form.Group>
+
+                              <Form.Group className="lastnametitle" controlId="formUsername">
+                                <Form.Label>Last Name</Form.Label>
+                                <Form.Control
+                                  disabled
+                                  type="text"
+                                  value={viewedUser.surname}
+                                />
+                              </Form.Group>
+
+                              <Form.Group className="lastnametitle" controlId="formUsername">
+                                <Form.Label>Email</Form.Label>
+                                <Form.Control
+                                  disabled
+                                  type="text"
+                                  value={viewedUser.email}
+                                />
+                              </Form.Group>
+
+                              <Form.Group className="lastnametitle" controlId="formUsername">
+                                <Form.Label>Contact Number</Form.Label>
+                                <Form.Control
+                                  disabled
+                                  type="text"
+                                  value={viewedUser.phone}
+                                />
+                              </Form.Group>
+
+                              <Form.Group className="lastnametitle" controlId="formUsername">
+                                <Form.Label>Gender</Form.Label>
+                                <Form.Control
+                                  disabled
+                                  type="text"
+                                  value={viewedUser.sex}
+                                />
+                              </Form.Group>
+
+                            </Form>
+                          )}
+                        </Modal.Body>
+                      </Modal>
                       </CTableRow>
-                    ))}
+                     ))
+                    )}
                   </CTableBody>
                 </CTable>
+                <div className="pagebtnslice">
+                <button className="btnprevious" onClick={() => setCurrentPage(currentPage - 1)} disabled={currentPage === 1}>
+                  Previous
+                </button>
+                <span className='totalpagescount'>{currentPage}/{totalPages}</span>
+                <button className="btnnextpage" onClick={() => setCurrentPage(currentPage + 1)} disabled={indexOfLastItem >= users.length}>
+                  Next
+                </button>
+              </div>
               </CCardBody>
             </CCard>
           ) : (

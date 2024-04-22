@@ -65,3 +65,30 @@
   .btneditsavechanges {
     margin-top: 20px;
   }
+
+  .avatarprofilelist {
+    height: 10px;
+  }
+
+  .pagebtnslice {
+    margin-top: 5px;
+    border-style: none;
+    text-align: center;
+  }
+
+  .btnnextpage {
+    border-style: none;
+    background-color: transparent;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    text-decoration: underline;
+  }
+  .btnprevious {
+    border-style: none;
+    background-color: transparent;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    text-decoration: underline;
+  }
+
+  .totalpagescount {
+    margin: 15px;
+  }

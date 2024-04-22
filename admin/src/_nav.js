@@ -11,6 +11,7 @@ import {
   cilUser,
   cilPhone,
   cilPlus,
+  cilUserPlus,
   cilCalendar,
   cibMessenger,
 } from '@coreui/icons'
@@ -38,8 +39,8 @@ const _nav = [
 
   {
     component: CNavItem,
-    name: 'Monthly Basis',
-    to: '/',
+    name: 'Monthly Due',
+    to: '/monthlydue',
     icon: <CIcon icon={cilCalendar} customClassName="nav-icon" />,
   },
 
@@ -52,9 +53,16 @@ const _nav = [
 
   {
     component: CNavItem,
-    name: 'Add Stalls T.',
+    name: 'Add Stall T.',
     to: '/addstallst',
     icon: <CIcon icon={cilPlus} customClassName="nav-icon" />,
+  },
+
+  {
+    component: CNavItem,
+    name: 'Add Administrator',
+    to: '/newadmin',
+    icon: <CIcon icon={cilUserPlus} customClassName="nav-icon" />,
   },
 
   {
@@ -64,23 +72,6 @@ const _nav = [
     icon: <CIcon icon={cilUser} customClassName="nav-icon" />,
   },
   
-  {
-    component: CNavTitle,
-    name: 'ABOUT',
-  },
-  {
-    component: CNavGroup,
-    name: 'Message',
-    icon: <CIcon icon={cibMessenger} customClassName="nav-icon" />,
-    items: [
-      {
-        component: CNavItem,
-        name: 'Stalls Tenants',
-        to: '/',
-      },
-      
-    ],
-  },
 ]
 
 export default _nav

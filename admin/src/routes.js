@@ -3,8 +3,10 @@ const Dashboard = React.lazy(() => import('./views/dashboard/Dashboard'))
 import Profile from './components/profile/Profile';
 import TH from './components/TH/TH';
 import Billrecords from './components/Billrecords/Billrecords';
+import Monthlydue from './components/Monthlydue/Monthlydue';
 import EditUser from './components/Edituser/EditUser'
 import Addstallst from './components/Addstallst/Addstallst';
+import Newadmin from './components/Newadmin/Newadmin';
 // Base
 const Accordion = React.lazy(() => import('./views/base/accordion/Accordion'))
 const Breadcrumbs = React.lazy(() => import('./views/base/breadcrumbs/Breadcrumbs'))
@@ -54,9 +56,11 @@ const routes = [
   { path: '/dashboard', name: 'Admin Dashboard', element: Dashboard },
   { path: '/transactionhistory', name: 'Admin Transaction History', element: TH },
   { path: '/billrecords', name: 'Admin Bill Records', element: Billrecords },
+  { path: '/monthlydue', name: 'Monthly due', element: Monthlydue },
   { path: '/profile', name: 'Profile', element: Profile },
   { path: '/edituser', name: 'Edit User', element: EditUser },
   { path: '/addstallst', name: 'Add Stalls Tenant', element: Addstallst },
+  { path: '/newadmin', name: 'Add New Admin', element: Newadmin },
   { path: '/base', name: 'Base', element: Cards, exact: true },
   { path: '/base/accordion', name: 'Accordion', element: Accordion },
   { path: '/base/breadcrumbs', name: 'Breadcrumbs', element: Breadcrumbs },

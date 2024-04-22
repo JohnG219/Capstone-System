@@ -41,13 +41,18 @@ const Forgotid = () => {
         toast.warning('password not matched');
       }
     } catch (err) {
-      setInfo({ severity: "error", message: "Error, please fill each field" });
+      toast.error('please fill required fields!');
     }
   };
 
   return (
     <body className="regBody4">
-      <div className="login3">
+      <div className="login3" style={{
+            maxWidth: "100%", 
+            height: "auto",   
+            display: "block", 
+            margin: "0 auto" 
+        }}>
         <div className="aContainer">
           <span className="sp5">Reset Password: {username}</span>
           <input
