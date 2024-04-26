@@ -2,7 +2,7 @@ import React, { useRef, useState, useContext, useEffect } from 'react';
 import axios from 'axios';
 import { apiUrl } from "../../../server.json";
 import { AuthContext } from '../../context/AuthContext';
-import { CCard, CCardHeader, CCardBody } from '@coreui/react';
+import { CCard, CCardHeader, CCardBody, CTable } from '@coreui/react';
 import "./th.css";
 import { useReactToPrint } from 'react-to-print';
 
@@ -71,6 +71,7 @@ const TH = () => {
     <>
       {user ? (
         <CCard className="newvie">
+          <CTable align="middle" className="mb-0 border" hover responsive>
           <CCardHeader>
             B.R <button className='printbtn' onClick={handlePrint}>Print</button>
             <button className='readme' onClick={openModal}>READ ME</button>
@@ -147,6 +148,7 @@ const TH = () => {
             )}
         </div>  
         </CCardBody>
+        </CTable>
       </CCard> 
       ) : (
         <div className="text-center mt-3">You are not logged in.</div>

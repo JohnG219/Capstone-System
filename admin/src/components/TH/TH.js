@@ -12,6 +12,7 @@ import CIcon from "@coreui/icons-react";
 
 import { NoEncryption } from "@mui/icons-material";
 import { toast } from "react-toastify";
+import { format } from "date-fns";
 
 const TH = () => {
   const { user } = useContext(AuthContext);
@@ -38,6 +39,11 @@ const TH = () => {
     stallnametra: "",
     dateoftransaction: "",
   });
+  const [define, setDefine] = useState("");
+
+  const formatDate = (date) => {
+    return format(date, "MMM dd, yyyy");
+  };
 
   const handlePrint = useReactToPrint({
     content: () => componentRef.current,
@@ -105,18 +111,58 @@ const TH = () => {
 
   const handleSaveChanges = async () => {
     try {
-      await axios.put(`${apiUrl}/transactions/${editedTransactionId}`, {
-        statusoftransaction: editedTransactionStatus,
-      });
+      const transactionToUpdate = transactions.find(
+        (transaction) => transaction._id === editedTransactionId
+      );
+
+      if (!transactionToUpdate) {
+        console.error("Transaction not found for ID:", editedTransactionId);
+        return;
+      }
+
+      let notificationMessage = "";
+      if (editedTransactionStatus === "PAID") {
+        notificationMessage = `Your payment of ₱${transactionToUpdate.amountoftransaction} was successful.`;
+      } else if (editedTransactionStatus === "CANCELLED") {
+        notificationMessage = `Your payment of ₱${transactionToUpdate.amountoftransaction} has been cancelled.`;
+      }
+
+      const notificationResponse = await axios.post(
+        `${apiUrl}/usernotifications`,
+        {
+          email: transactionToUpdate.email || "",
+          userdefinenotifi: notificationMessage,
+          usertimedatenotifi: formatDate(new Date()),
+        }
+      );
+
+      const newNotification = notificationResponse.data.usernotification;
+
+      const transactionResponse = await axios.put(
+        `${apiUrl}/transactions/${editedTransactionId}`,
+        {
+          statusoftransaction: editedTransactionStatus,
+        }
+      );
+
       const updatedTransactions = transactions.map((transaction) =>
         transaction._id === editedTransactionId
-          ? { ...transaction, statusoftransaction: editedTransactionStatus }
+          ? {
+              ...transaction,
+              statusoftransaction: editedTransactionStatus,
+              notification: newNotification,
+            }
           : transaction
       );
+
       setTransactions(updatedTransactions);
       handleCloseEditModal();
+      toast.success("Transaction status updated successfully");
     } catch (error) {
-      console.error("Error updating transaction status:", error);
+      console.error(
+        "Error adding notification and updating transaction status:",
+        error
+      );
     }
   };
 
@@ -126,6 +172,7 @@ const TH = () => {
         `${apiUrl}/transactions`,
         newTransactionData
       );
+
       setAddTransactionStatus("add transaction success.");
       handleCloseAddModal();
       toast.success("add transaction success");
@@ -310,6 +357,7 @@ const TH = () => {
                 )}
               </div>
             </CCardBody>
+
             <Modal show={showEditModal} onHide={handleCloseEditModal}>
               <Modal.Header closeButton>
                 <Modal.Title>Transaction Status</Modal.Title>
@@ -329,9 +377,81 @@ const TH = () => {
                       <option value="CANCELLED">CANCELLED</option>
                     </Form.Select>
                   </Form.Group>
+
+                <Form.Group 
+                  style={{ display: "none" }} 
+                  controlId="formEmail">
+                    <Form.Label>Email</Form.Label>
+                    <Form.Control
+                      type="email"
+                      placeholder="Enter email"
+                      value={
+                        transactions.find(
+                          (transaction) =>
+                            transaction._id === editedTransactionId
+                        )?.email || ""
+                      }
+                      disabled
+                    />
+                  </Form.Group>
+
+                <Form.Group 
+                  style={{ display: "none" }} 
+                  controlId="formEmail">
+                    <Form.Label>Amount</Form.Label>
+                    <Form.Control
+                      type="amount"
+                      placeholder="Enter amount"
+                      value={
+                        transactions.find(
+                          (transaction) =>
+                            transaction._id === editedTransactionId
+                        )?.amountoftransaction || ""
+                      }
+                      disabled
+                    />
+                  </Form.Group>
+
+                  <Form.Group
+                    style={{ display: "none" }}
+                    controlId="formUserDefinedNotif"
+                  >
+                    <Form.Label>User Defined Notification</Form.Label>
+                    <Form.Control
+                      type="text"
+                      placeholder={`₱${
+                        transactions.find(
+                          (transaction) =>
+                            transaction._id === editedTransactionId
+                        )?.amountoftransaction || ""
+                      } ${editedTransactionStatus}`}
+                      value={define}
+                      onChange={(e) =>
+                        setEditedTransactionStatus(e.target.value)
+                      }
+                      disabled
+                    />
+                  </Form.Group>
+
+                  <Form.Group
+                    style={{ display: "none" }}
+                    controlId="formUserDefinedNotif"
+                  >
+                    <Form.Label>Date</Form.Label>
+                    <Form.Control
+                      type="text"
+                      placeholder="Enter notification"
+                      value={formatDate(new Date())}
+                      required
+                      disabled
+                    />
+                  </Form.Group>
                 </Form>
               </Modal.Body>
               <Modal.Footer>
+                <Button variant="secondary" onClick={handleCloseEditModal}>
+                  Close
+                </Button>
                 <Button variant="primary" onClick={handleSaveChanges}>
                   Save Changes
                 </Button>

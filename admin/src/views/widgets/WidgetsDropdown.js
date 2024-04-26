@@ -92,7 +92,6 @@ const WidgetsDropdown = (props) => {
     const fetchAllBills = async () => {
       try {
         const response = await axios.get(`${apiUrl}/bills`);
-        // Assuming response.data contains an array of bills
         const billsData = response.data.data;
         const { totalWaterBill, totalElectricBill, totalPreviousBill } = calculateTotalBills(billsData);
         setWaterBillAmount(totalWaterBill);

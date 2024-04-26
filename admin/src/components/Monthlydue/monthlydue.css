@@ -82,3 +82,10 @@ height: 30px;
     font-size: 13px;
   }
 }
+
+
+.btnnextpage[disabled],
+.btnprevious[disabled] {
+  color: #999999;
+  cursor: not-allowed;
+}

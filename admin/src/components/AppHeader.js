@@ -121,8 +121,9 @@ const AppHeader = () => {
                 notifications.map((notification, index) => (
                   <React.Fragment key={notification._id}>
                     <CDropdownItem onClick={() => handleDeleteNotification(notification._id)}>
-                      <p id="definenotifi">{notification.definenotifi}</p>
+                      <p id="definenotifi">{notification.definenotifi}
                       <p id="timedatenotifi">{notification.timedatenotifi}</p>
+                      </p>
                     </CDropdownItem>
                     {index !== notifications.length - 1 && <CDropdownDivider />}
                   </React.Fragment>

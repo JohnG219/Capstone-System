@@ -4,6 +4,7 @@ const INITIAL_STATE = {
   user: JSON.parse(localStorage.getItem("user")) || null,
   loading: false,
   error: null,
+  otpVerified: false,
 };
 
 export const AuthContext = createContext(INITIAL_STATE);
@@ -15,24 +16,33 @@ const AuthReducer = (state, action) => {
         user: null,
         loading: true,
         error: null,
+        otpVerified: false, 
       };
     case "LOGIN_SUCCESS":
       return {
         user: action.payload,
         loading: false,
         error: null,
+        otpVerified: true, 
+      };
+    case "LOGIN_OTP_VERIFIED":
+      return {
+        ...state,
+        otpVerified: true,
       };
     case "LOGIN_FAILURE":
       return {
         user: null,
         loading: false,
         error: action.payload,
+        otpVerified: false, 
       };
     case "LOGOUT":
       return {
         user: null,
         loading: false,
         error: null,
+        otpVerified: false, 
       };
     case "RESET_ERROR":
       return {
@@ -57,6 +67,7 @@ export const AuthContextProvider = ({ children }) => {
         user: state.user,
         loading: state.loading,
         error: state.error,
+        otpVerified: state.otpVerified,
         dispatch,
       }}
     >

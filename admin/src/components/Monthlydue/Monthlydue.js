@@ -118,7 +118,6 @@ const Monthlydue = () => {
       console.error("Error updating bill:", error);
     }
   };
-  
 
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
@@ -416,7 +415,10 @@ const Monthlydue = () => {
               </Modal.Footer>
             </Modal>
 
-            <Modal show={showUpdateModal} onHide={() => setShowUpdateModal(false)}>
+            <Modal
+              show={showUpdateModal}
+              onHide={() => setShowUpdateModal(false)}
+            >
               <Modal.Header closeButton>
                 <Modal.Title>Update Monthly Due</Modal.Title>
               </Modal.Header>
@@ -454,24 +456,25 @@ const Monthlydue = () => {
                   </Form.Group>
                   <Form.Group className="billtypelab" controlId="formbilltype">
                     <Form.Label>Monthly Due Electric Bill</Form.Label>
-                    <Form.Control 
-                    type="text" 
-                    placeholder="Mar15-Apr15" 
-                    value={updatedBillData.mthdateelectricbill}
+                    <Form.Control
+                      type="text"
+                      placeholder="Mar15-Apr15"
+                      value={updatedBillData.mthdateelectricbill}
                       onChange={(e) =>
                         setUpdatedBillData({
                           ...updatedBillData,
                           mthdateelectricbill: e.target.value,
                         })
-                      } />
+                      }
+                    />
                   </Form.Group>
 
                   <Form.Group className="billtypelab" controlId="formbilltype">
                     <Form.Label>Water Bill</Form.Label>
-                    <Form.Control 
-                    type="text" 
-                    placeholder="Enter Amount" 
-                    value={updatedBillData.waterbill}
+                    <Form.Control
+                      type="text"
+                      placeholder="Enter Amount"
+                      value={updatedBillData.waterbill}
                       onChange={(e) =>
                         setUpdatedBillData({
                           ...updatedBillData,
@@ -482,10 +485,10 @@ const Monthlydue = () => {
                   </Form.Group>
                   <Form.Group className="billtypelab" controlId="formbilltype">
                     <Form.Label>Monthly Due Water Bill</Form.Label>
-                    <Form.Control 
-                    type="text" 
-                    placeholder="Mar15-Apr15" 
-                    value={updatedBillData.mthdatewaterbill}
+                    <Form.Control
+                      type="text"
+                      placeholder="Mar15-Apr15"
+                      value={updatedBillData.mthdatewaterbill}
                       onChange={(e) =>
                         setUpdatedBillData({
                           ...updatedBillData,
@@ -497,10 +500,10 @@ const Monthlydue = () => {
 
                   <Form.Group className="billtypelab" controlId="formbilltype">
                     <Form.Label>Previous Bill</Form.Label>
-                    <Form.Control 
-                    type="text" 
-                    placeholder="Enter Amount" 
-                    value={updatedBillData.currentbalance}
+                    <Form.Control
+                      type="text"
+                      placeholder="Enter Amount"
+                      value={updatedBillData.currentbalance}
                       onChange={(e) =>
                         setUpdatedBillData({
                           ...updatedBillData,
@@ -511,10 +514,10 @@ const Monthlydue = () => {
                   </Form.Group>
                   <Form.Group className="billtypelab" controlId="formbilltype">
                     <Form.Label>Month Previous Bill</Form.Label>
-                    <Form.Control 
-                    type="text" 
-                    placeholder="Mar15-May15" 
-                    value={updatedBillData.mthdatecurrentbalance}
+                    <Form.Control
+                      type="text"
+                      placeholder="Mar15-May15"
+                      value={updatedBillData.mthdatecurrentbalance}
                       onChange={(e) =>
                         setUpdatedBillData({
                           ...updatedBillData,
@@ -526,7 +529,9 @@ const Monthlydue = () => {
                 </Form>
               </Modal.Body>
               <Modal.Footer>
-                <Button variant="primary" onClick={handleUpdateSubmit}>Save Changes</Button>
+                <Button variant="primary" onClick={handleUpdateSubmit}>
+                  Save Changes
+                </Button>
               </Modal.Footer>
             </Modal>
           </CTable>

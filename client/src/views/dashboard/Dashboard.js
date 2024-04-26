@@ -1,13 +1,17 @@
-import React from 'react'
+import { useContext } from "react";
+import { AuthContext } from "../../context/AuthContext";
 import classNames from 'classnames'
+import moment from "moment";
+
+
 
 import {
   CCard,
-  CCardFooter,
+  CCardBody,
   CCol,
-  CProgress,
   CRow,
-} from '@coreui/react'
+} from "@coreui/react";
+
 import CIcon from '@coreui/icons-react'
 import {
   cibCcAmex,
@@ -25,6 +29,7 @@ import {
   cifIn,
   cifPl,
   cifUs,
+  cifPh,
   cibTwitter,
   cilUser,
   cilUserFemale,
@@ -34,6 +39,9 @@ import WidgetsBrand from '../widgets/WidgetsBrand'
 import WidgetsDropdown from '../widgets/WidgetsDropdown'
 
 const Dashboard = () => {
+  const { user } = useContext(AuthContext);
+  const currentPHTime = moment().utcOffset("+0800").format("MMMM D, YYYY h:mm A");
+
   const progressExample = [
   ]
 
@@ -44,32 +52,22 @@ const Dashboard = () => {
   return (
     <>
       <WidgetsDropdown className="mb-4" />
-      <CCard className="mb-4">
-        
-      <CCardFooter>
-          <CRow
-            xs={{ cols: 1, gutter: 4 }}
-            sm={{ cols: 2 }}
-            lg={{ cols: 4 }}
-            xl={{ cols: 5 }}
-            className="mb-2 text-center"
-          >
-            {progressExample.map((item, index, items) => (
-              <CCol
-                className={classNames({
-                  'd-none d-xl-block': index + 1 === items.length,
-                })}
-                key={index}
-              >
-                <div className="text-body-secondary">{item.title}</div>
-                <div className="fw-semibold text-truncate">
-                  {item.value} ({item.percent}%)
+      <CCard className="mb-4" >
+        {user ? (
+          <CCardBody>
+            <CRow>
+              <CCol sm={5}>
+              <div className="small text-body-secondary" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                  <h4 id="traffic" className="card-title mb-0" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', textAlign: 'center' }}>
+                    {currentPHTime} <CIcon icon={cifPh} />
+                  </h4>
                 </div>
-                <CProgress thin className="mt-2" color={item.color} value={item.percent} />
               </CCol>
-            ))}
-          </CRow>
-        </CCardFooter>
+            </CRow>
+          </CCardBody>
+        ) : (
+          <div className="text-center mt-3"></div>
+        )}
       </CCard>
       <WidgetsBrand className="mb-4" withCharts />
       <CRow>

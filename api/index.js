@@ -10,6 +10,7 @@ import meetings from "./routes/meetings.js"
 import billrecords from "./routes/billrecords.js"
 import transactions from "./routes/transactions.js"
 import notifications from "./routes/notifications.js"
+import usernotifications from "./routes/usernotifications.js"
 
 const app = express();
 
@@ -42,6 +43,7 @@ app.use("/api/meetings", meetings);
 app.use("/api/billrecords", billrecords);
 app.use("/api/transactions", transactions);
 app.use("/api/notifications", notifications);
+app.use("/api/usernotifications", usernotifications);
 
 app.use((err, req, res, next) => {
   const errorStatus = err.status || 500;
