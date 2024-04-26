@@ -6,18 +6,20 @@ import { apiUrl } from "../../../server.json"
 import "./Forgotid.css";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { CircularProgress } from "@material-ui/core";
 
 const Forgotid = () => {
   const location = useLocation();
   const [userid, setUserid] = useState(location.state.userid);
   const [username, setUsername] = useState(location.state.username);
+  const [ loading, setLoading ] = useState(false);
   const [info, setInfo] = useState({});
   const [credentials, setCredentials] = useState({
     password: undefined,
     password2: undefined,
   });
 
-  const { loading, error, dispatch } = useContext(AuthContext);
+  const { error, dispatch } = useContext(AuthContext);
   const navigate = useNavigate();
 
   //   Handle Change Function
@@ -29,6 +31,7 @@ const Forgotid = () => {
   //Handle Click Function
   const handleClick = async (e) => {
     e.preventDefault();
+    setLoading(true);
 
     try {
       if (credentials.password == credentials.password2) {
@@ -43,6 +46,7 @@ const Forgotid = () => {
     } catch (err) {
       toast.error('please fill required fields!');
     }
+    setLoading(false);
   };
 
   return (
@@ -70,7 +74,11 @@ const Forgotid = () => {
             onChange={handleChange}
           />
           <button disabled={loading} onClick={handleClick} className="Button12">
-            Confirm
+          {loading ? (
+                  <CircularProgress size={19} color="white" />
+                ) : (
+                  "Confirm"
+                )}
           </button>
         </div>
       </div>

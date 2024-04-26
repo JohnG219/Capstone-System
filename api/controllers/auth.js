@@ -15,8 +15,17 @@ export const register = async (req, res, next) => {
       password: hash,
     });
 
+    const otp = Math.floor(100000 + Math.random() * 900000);
+    const otpExpiration = new Date(Date.now() + 15 * 60 * 1000); 
+
+    newUser.otp = otp;
+    newUser.otpExpiration = otpExpiration;
+
     await newUser.save();
-    res.status(200).send("User has been created.");
+    const recipientEmail = newUser.email;
+    await sendOtp(recipientEmail, otp);
+
+    res.status(200).send("User has been created. OTP sent for verification.");
   } catch (err) {
     next(err);
   }
@@ -45,6 +54,41 @@ export const verifyOTP = async (req, res, next) => {
     next(err);
   }
 };
+
+
+export const sendOTP = async (req, res, next) => {
+  try {
+    const { email } = req.body;
+
+    if (!email) {
+      return next(createError(400, "Email is required."));
+    }
+
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      return next(createError(404, "User not found"));
+    }
+
+    const otp = Math.floor(100000 + Math.random() * 900000);
+    const otpExpiration = new Date(Date.now() + 15 * 60 * 1000); 
+
+    // Corrected variable name from `newUser` to `user`
+    user.otp = otp;
+    user.otpExpiration = otpExpiration;
+
+    await user.save();
+    const recipientEmail = user.email; 
+    await sendOtp(recipientEmail, otp);
+
+    res.status(200).json({ message: "OTP sent successfully." });
+  } catch (err) {
+    console.error(err); 
+    next(err);
+  }
+};
+
+
 
 
 export const login = async (req, res, next) => {

@@ -13,7 +13,7 @@ import { CircularProgress } from '@material-ui/core'
 import { toast } from 'react-toastify'
 
 const Register = () => {
-  const { user } = useContext(AuthContext);
+  const { user, dispatch } = useContext(AuthContext);
   const [username, setUsername] = useState('')
   const [surname, setSurname] = useState('')
   const [email, setEmail] = useState('')
@@ -30,6 +30,9 @@ const Register = () => {
   const [month, setMonth] = useState(''); 
   const [day, setDay] = useState('');
   const [year, setYear] = useState(''); 
+  const [showOtpForm, setShowOtpForm] = useState(false);
+  const [otpInput, setOtpInput] = useState('');
+  const [credentials, setCredentials] = useState({ error: {} });
 
   const months = [
     'January', 'February', 'March', 'April', 'May', 'June',
@@ -141,17 +144,16 @@ const Register = () => {
         img: url,
       }
 
-      await axios.post(`${apiUrl}/auth/register`, newUser)
-      setSubmitted(true)
-      toast.success('Your Registration has been Successful!')
-        navigate('/login')
-    } catch (err) {
-      console.log(err)
-      toast.error('Error, please fill each field')
-    } finally {
-      setLoading(false)
-    }
-  }
+      await axios.post(`${apiUrl}/auth/register`, newUser);
+      toast.info("A verification otp number has been sent to your email.");
+      setShowOtpForm(true); 
+   } catch (err) {
+      console.log(err);
+      toast.error('Error, please fill each field');
+   } finally {
+      setLoading(false);
+   }
+};
 
   const navigate = useNavigate()
   const handleCancel = () => {
@@ -164,9 +166,34 @@ const Register = () => {
     }
   }, [user, navigate]);
 
+
+  const handleOTPVerification = async () => {
+    try {
+      const res = await axios.post(`${apiUrl}/auth/verify-otp`, {
+        email,
+        otp: otpInput,
+      });
+  
+      if (res.data) {
+        dispatch({ type: "LOGIN_OTP_VERIFIED" });
+        dispatch({ type: "LOGIN_SUCCESS", payload: res.data.details });
+        toast.success("Your register has been successful.");
+        navigate("/");
+      } else {
+        toast.error("Incorrect OTP. Please try again.");
+      }
+    } catch (err) {
+      console.error(err);
+      toast.error("Error verifying OTP. Please try again.");
+    }
+  };
+  
+  
+
   return (
     <>
       <body className="regBody">
+      {!showOtpForm && (
         <div className="loginContainer">
           <div className="logodiv" style={{
             maxWidth: "100%", 
@@ -323,6 +350,22 @@ const Register = () => {
             </button>
           </div>
         </div>
+        )}
+        {showOtpForm && (
+          <div className="lContainer">
+             <input
+                type="text"
+                placeholder="Enter OTP"
+                id="otp"
+                value={otpInput}
+                onChange={(e) => setOtpInput(e.target.value)} 
+                className={`lInput ${credentials.error.otp ? "error" : ""}`}
+             />
+             <button onClick={handleOTPVerification} className="lButton">
+                {loading ? <CircularProgress size={19} color="white" /> : 'Verify OTP'}
+             </button>
+          </div>
+       )}       
       </body>
     </>
   )

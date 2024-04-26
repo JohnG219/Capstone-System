@@ -13,7 +13,6 @@ import { toast } from "react-toastify";
 const Login = () => {
   const [otpInput, setOtpInput] = useState("");
   const [showOtpForm, setShowOtpForm] = useState(false);
-  const [otpSent, setOtpSent] = useState(false);
 
   const [credentials, setCredentials] = useState({
     email: "",
@@ -68,6 +67,7 @@ const Login = () => {
       toast.error("Incorrect OTP. Please try again.");
     }
   };
+  
 
   const handleClick = async (e) => {
     e.preventDefault();
@@ -85,12 +85,8 @@ const Login = () => {
     try {
       const res = await axios.post(`${apiUrl}/auth/login`, credentials);
       if (!res.data.otpVerified) {
+        toast.info("A verification otp number has been sent to your email.");
         setShowOtpForm(true);
-      } else {
-        dispatch({ type: "LOGIN_OTP_VERIFIED" });
-        dispatch({ type: "LOGIN_SUCCESS", payload: res.data.details });
-        toast.success("Login Successful!");
-        navigate("/");
       }
     } catch (err) {
       dispatch({ type: "LOGIN_FAILURE", payload: err.response.data });

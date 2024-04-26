@@ -34,11 +34,11 @@ const sendOtp = async (recipientEmail, otp) => {
         table: {
           data: [
             {
-              "otp number": `<span style="font-size: 24px;">${otp}</span>`,
+              "Your OTP Number": `<span style="font-size: 24px;">${otp}</span>`,
             }
           ]
         },
-        outro: "To help keep your account safe, Utility Stalls Zone-3 System wants to make sure It's really you trying to login.",
+        outro: "To help keep your account safe, Utility Stalls Zone-3 System wants to make sure It's really you trying to login or register.",
       }
     };
 
