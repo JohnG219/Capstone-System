@@ -123,7 +123,7 @@ const Addstallst = () => {
     data.append('upload_preset', 'upload')
     try {
       const uploadRes = await axios.post(
-        'https://api.cloudinary.com/v1_1/djkuhwk0q/upload',
+        'https://api.cloudinary.com/v1_1/druug7n6r/upload',
         data,
       )
       const { url } = uploadRes.data

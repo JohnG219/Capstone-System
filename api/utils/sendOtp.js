@@ -22,7 +22,7 @@ const sendOtp = async (recipientEmail, otp) => {
       theme: "cerberus",
       product: {
         logo: "https://i.ibb.co/vYXnyF9/logo.png",
-        name: "UTILITY STALLS IN ZONE 3 CAINTA GREENPARK VILLAGE",
+        name: "UTILITY MANAGEMENT IN ZONE 3 CAINTA GREENPARK VILLAGE",
         link: 'https://zone-3-stalls-tenant.netlify.app/'
       }
     });
@@ -38,7 +38,7 @@ const sendOtp = async (recipientEmail, otp) => {
             }
           ]
         },
-        outro: "To help keep your account safe, Utility Stalls Zone-3 System wants to make sure It's really you trying to login or register.",
+        outro: "To help keep your account safe, the Utility Management Zone-3 CGP System wants to make sure it's really you trying to access.",
       }
     };
 
