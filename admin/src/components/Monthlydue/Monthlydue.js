@@ -114,6 +114,9 @@ const Monthlydue = () => {
       setShowUpdateModal(false);
       handleCloseAddModal();
       toast.success("update monthly due successfully");
+      setTimeout(() => {
+        window.location.reload();
+      }, 1500);
     } catch (error) {
       console.error("Error updating bill:", error);
     }

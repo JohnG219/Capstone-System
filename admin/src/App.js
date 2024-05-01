@@ -1,10 +1,7 @@
 import React, { Suspense, useEffect } from 'react'
 import { BrowserRouter, HashRouter, Route, Routes } from 'react-router-dom'
 import { useSelector } from 'react-redux'
-
 import Login from "./pages/login/Login";
-import Forgot from "./components/forgot/Forgot";
-import Forgotid from "./components/forgotid/Forgotid";
 
 import { CSpinner, useColorModes } from '@coreui/react'
 import './scss/style.scss'
@@ -36,8 +33,6 @@ const App = () => {
       <Routes>
         <Route path="*" name="Home" element={<DefaultLayout />} />
         <Route exact path="/login" name="Login Page" element={<Login />} />
-        <Route exact path="/forgot" name="Forgot Page" element={<Forgot />} />
-        <Route exact path="/forgotid" name="Forgot Page" element={<Forgotid />} />
     </Routes>
     </BrowserRouter>
   )

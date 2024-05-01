@@ -39,6 +39,9 @@ const Billrecords = () => {
       setAddBillRecord("add transaction success.");
       handleCloseAddModal();
       toast.success("add billrecord success");
+      setTimeout(() => {
+        window.location.reload();
+      }, 1500);
     } catch (error) {
       console.error("Error adding transaction:", error);
     }

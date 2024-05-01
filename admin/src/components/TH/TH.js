@@ -176,6 +176,9 @@ const TH = () => {
       setAddTransactionStatus("add transaction success.");
       handleCloseAddModal();
       toast.success("add transaction success");
+      setTimeout(() => {
+        window.location.reload();
+      }, 1500);
     } catch (error) {
       console.error("Error adding transaction:", error);
     }
