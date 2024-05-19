@@ -7,7 +7,6 @@ const meetingSchema = new mongoose.Schema({
   },
   time: {
     type: String,
-    required: true,
   },
 });
 

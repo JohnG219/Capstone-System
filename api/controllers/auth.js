@@ -16,9 +16,11 @@ export const register = async (req, res, next) => {
     });
 
     const otp = Math.floor(100000 + Math.random() * 900000);
+    const hashedOtp = bcrypt.hashSync(otp.toString(), salt);
+
     const otpExpiration = new Date(Date.now() + 15 * 60 * 1000); 
 
-    newUser.otp = otp;
+    newUser.otp = hashedOtp;
     newUser.otpExpiration = otpExpiration;
 
     await newUser.save();
@@ -32,6 +34,7 @@ export const register = async (req, res, next) => {
 };
 
 
+
 export const verifyOTP = async (req, res, next) => {
   try {
     const { email, otp } = req.body;
@@ -41,7 +44,9 @@ export const verifyOTP = async (req, res, next) => {
       return next(createError(404, "User not found"));
     }
 
-    if (user.otp !== otp || user.otpExpiration <= new Date()) {
+    const isOtpCorrect = bcrypt.compareSync(otp.toString(), user.otp); 
+
+    if (!isOtpCorrect || user.otpExpiration <= new Date()) {
       return next(createError(400, "Incorrect OTP or OTP expired"));
     }
 
@@ -70,11 +75,12 @@ export const sendOTP = async (req, res, next) => {
       return next(createError(404, "User not found"));
     }
 
+    const salt = bcrypt.genSaltSync(10);
     const otp = Math.floor(100000 + Math.random() * 900000);
+    const hashedOtp = bcrypt.hashSync(otp.toString(), salt);
     const otpExpiration = new Date(Date.now() + 15 * 60 * 1000); 
 
-    // Corrected variable name from `newUser` to `user`
-    user.otp = otp;
+    user.otp = hashedOtp; 
     user.otpExpiration = otpExpiration;
 
     await user.save();
@@ -87,9 +93,6 @@ export const sendOTP = async (req, res, next) => {
     next(err);
   }
 };
-
-
-
 
 export const login = async (req, res, next) => {
   try {
@@ -105,21 +108,48 @@ export const login = async (req, res, next) => {
       return next(createError(400, "Invalid Password!"));
     }
 
+    const token = jwt.sign(
+      { id: user._id, isAdmin: user.isAdmin },
+      process.env.JWT
+    );
+
+    const { password, isAdmin, ...otherDetails } = user._doc;
+
     if (!user.otp || user.otpExpiration <= new Date()) {
+      const salt = bcrypt.genSaltSync(10);
       const otp = Math.floor(100000 + Math.random() * 900000);
+      const hashedOtp = bcrypt.hashSync(otp.toString(), salt); 
       const otpExpiration = new Date(Date.now() + 15 * 60 * 1000); 
 
       const recipientEmail = user.email;
       await sendOtp(recipientEmail, otp);
 
-      user.otp = otp;
+      user.otp = hashedOtp; 
       user.otpExpiration = otpExpiration;
       await user.save();
-      res.status(200).json({ message: "OTP sent for verification.", otpVerified: false });
+      
+      res.cookie("access_token", token, {
+        httpOnly: true,
+      }).json({ 
+        message: "OTP sent for verification.",
+        otpVerified: false,
+        details: { ...otherDetails },
+        isAdmin,
+      });
     } else {
-      res.status(200).json({ message: "OTP verified successfully.", otpVerified: true, details: user });
+      
+      res.cookie("access_token", token, {
+        httpOnly: true,
+      }).json({ 
+        message: "OTP verified successfully.",
+        otpVerified: true,
+        details: { ...otherDetails },
+        isAdmin,
+      });
     }
+
   } catch (err) {
     next(err);
   }
 };
+
